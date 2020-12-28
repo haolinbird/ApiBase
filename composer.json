@@ -1,0 +1,33 @@
+{
+	"name" : "ApiBase",
+	"description" : "ApiBase",
+	"config" : {
+		"vendor-dir" : "Vendor",
+		"secure-http" : false
+	},
+	"repositories" : [
+            {
+                "packagist":false
+            },
+            {
+                "type" : "composer",
+                "url" : "http://packagist.mycode.com/"
+            }
+	],
+	"scripts" : {
+		"post-update-cmd" : "rm -rf Vendor/composer && rm -rf Vendor/autoload.php",
+		"post-install-cmd" : "rm -rf Vendor/composer && rm -rf Vendor/autoload.php"
+	},
+	"require" : {
+		"Bootstrap" : "1.1.0",
+		"PHPClient" : "1.4.7-beta",
+		"JMWebFramework": "0.0.3-alpha",
+		"Redis": "0.5.2-beta",
+		"Thrift" : "1.2.7-beta",
+		"MNLogger" : "^0.5.9-beta",
+		"Log": "0.1.6-beta",
+		"Jwt": "0.1.3", ,
+        "JmArchiTracker": "0.1.0-beta",
+		"EventClient": "1.0.3-beta1",
+	}
+}
