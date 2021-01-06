@@ -1,6 +1,4 @@
 <?php
-use Jwt\Jwt;
-
 /**
  * api 基类
  * @author Lin Hao<lin.hao@xiaonianyu.com>
@@ -104,5 +102,84 @@ class Controller_Base_Base extends JMViewController_WebManagementBase
      */
     protected function initParametersAndDevice()
     {
+    }
+
+    /**
+     * 输出响应信息.
+     *
+     * @param string  $type       消息.
+     * @param array   $result     数据.
+     * @param mixed   $message    返回码.
+     * @param string  $action     Action.
+     * @param array   $popWindows 提示信息类型.
+     *
+     * @return void
+     */
+    public function response($type, $result = array(), $message = false, $action = 'toast', $popWindows = array())
+    {
+        // 输出返回的header 信息
+        $this->responceHeader();
+        \Util\AppResponse::responseExit($type, $result, $message, $action, $popWindows);
+    }
+
+    /**
+     * 输出成功json.
+     *
+     * @param array  $result  Data.
+     * @param string $message 消息.
+     * @param string $action  Action, 如toast,jump.
+     *
+     * @return void
+     */
+    public function responseSuccess($result = array(), $message = '', $action = 'toast', $popWindows = array())
+    {
+        $this->response("SUCCESS", $result, $message, $action, $popWindows);
+    }
+
+    /**
+     * 输出失败json.
+     *
+     * @param mixed  $exception 异常信息.
+     * @param string $action    Action, 如toast,jump.
+     */
+    public function responseFail($exception = '', $action = 'toast')
+    {
+        if ($exception instanceof \RpcBusinessException) {
+            // 业务异常信息可以输出.
+            $message = $exception->getMessage();
+        } else {
+            if ($exception instanceof \Exception) {
+                \MNLogger\EXLogger::instance()->log($exception);
+                if (\Config\Env::$env != 4) {
+                    $message = $exception->getMessage();
+                } else {
+                    $message = '网络开小差啦';
+                }
+                // \Util\Log::log($exception->getMessage(), "shuabao_api_exception");
+                \Util\Log\Exception::getInstance()->addLog(
+                    'shuabao_api_exception',
+                    $exception->getCode(),
+                    $exception->getMessage()
+                );
+            } else {
+                $message = $exception;
+            }
+        }
+        $this->response('FAILED', array(), $message, $action);
+    }
+
+    /**
+     * 接口返回header 信息
+     */
+    protected function responceHeader()
+    {
+        if (!isset($this->responseHeaders['access_token'])){
+            $this->responseHeaders['access_token'] = $this->accessToken;
+        }
+        if (!empty($this->responseHeaders) && is_array($this->responseHeaders)){
+            foreach ($this->responseHeaders as $key => $v){
+                header($key. ' : '. $v);
+            }
+        }
     }
 }

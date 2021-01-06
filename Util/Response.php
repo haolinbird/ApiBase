@@ -11,10 +11,10 @@ namespace Util;
 /**
  * Helper_Util.
  */
-class AppResponse
+class Response
 {
     private static $response = array(
-        'SUCCESS'       => array('code' => 0,     'http_code' => 200, 'message' => ''),
+        'SUCCESS'       => array('code' => 0,     'http_code' => 200, 'message' => 'SUCCESS'),
         'UNKNOW'        => array('code' => 1,     'http_code' => 200, 'message' => '未知错误'),
         'FAILED'        => array('code' => 2,     'http_code' => 200, 'message' => '系统繁忙，请稍后重试！'),
         'NO_AUTHORIZED' => array('code' => 3,     'http_code' => 200, 'message' => '无权操作'),
@@ -50,40 +50,34 @@ class AppResponse
     }
 
     /**
-     * 输出失败响应信息并退出.
+     * 输出成功响应信息并退出.
      *
-     * @param mixed   $result  结果信息.
-     * @param mixed   $message 结果信息.
-     * @param string  $action  展示方式.
+     * @param array  $result  结果数据.
+     * @param string $message 提示信息.
      *
      * @return void
      */
-    public static function responseFailed($result = false, $message = false, $action = 'toast', $popWindows = array())
+    public static function responseSuccess($result = [], $message = '')
     {
-        $response = self::$response['FAILED'];
+        $response = self::$response['SUCCESS'];
         $code     = $response['code'];
-        $httpCode = $response['http_code'];
 
         $message  = $message ? $message : $response['message'];
 
-        if (isset($response['action'])) {
-            $action = $response['action'];
-        }
-        self::outPutJsonResponse($message, $result, $code, $httpCode, $action, $popWindows);
+        self::outPutJsonResponse($message, $result, $code);
     }
 
+
     /**
-     * 输出成功响应信息并退出.
+     * 输出失败响应信息并退出.
      *
-     * @param mixed   $result  结果信息.
-     * @param mixed   $message 结果信息.
-     * @param string  $action  展示方式.
+     * @param string $errorKey 错误错误 KEY.
      *
      * @return void
      */
-    public static function responseSuccess($result = false, $message = false, $action = 'toast', $popWindows = array())
+    public static function responseFailed($errorKey)
     {
-        $response = self::$response['SUCCESS'];
+        $response = isset(self::$response[$errorKey]) ? self::$response[$errorKey] : self::$response['FAILED'];
         $code     = $response['code'];
         $httpCode = $response['http_code'];
 

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Service 基类.
+ *
+ * @author Lin Hao<lin.hao@xiaonianyu.com>
+ * @date 2020-12-28 14:23:38
+ */
+
 namespace Service;
 
 class ServiceBase extends \Module\ModuleBase

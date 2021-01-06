@@ -8,11 +8,10 @@
 class Controller_Base_Demo extends Controller_Base_Base
 {
 
-    public $needLogin = true;
+    public $needLogin = false;
 
     public function initialize()
     {
-
     }
 
     /**
@@ -20,8 +19,11 @@ class Controller_Base_Demo extends Controller_Base_Base
      */
     public function action_Test()
     {
-        $testStr = 'hello api base';
-        echo \Module\Demo::instance()->testRequestService($testStr);
+        $params = JMGetGet('test_params') ?: 'hello test';
+
+        $result = \Module\Demo::instance()->testRequestService($params);
+
+        return $this->responseSuccess(['type' => 'success']);
     }
 }
 

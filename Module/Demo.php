@@ -35,6 +35,7 @@ class Demo extends \Module\ModuleBase
     public function testRequestService($testStr)
     {
         try {
+            return \Service\Demo\Test::instance()->
             return \PHPClient\Text::inst('ServiceBase')->setClass('Test')->test($testStr);
         } catch (\Exception $e) {
             return $e->getMessage();
