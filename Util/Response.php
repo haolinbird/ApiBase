@@ -118,11 +118,7 @@ class Response
         header("http/1.0 $httpCode");
         // header("Date:  {$date}");
         header("Content-type: application/json; charset=utf8");
-        if (isset(\Config\Env::$env) && \Config\Env::$env != 4) {
-            echo json_encode($res, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode($res);
-        }
+        echo json_encode($res);
         exit();
     }
 }
